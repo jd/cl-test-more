@@ -295,9 +295,10 @@ CL-TEST-MORE is freely distributable under the MIT License (http://www.opensourc
         (error "Not found test: ~a" (car test)))))
 
 (defun run-test-package (package)
-  (loop for (name . nil) in (find-tests-of-package package)
-        do (run-test name))
-  (let ((*package* (find-package package)))
+  (let ((tests (find-tests-of-package package)))
+    (plan (length tests))
+    (loop for (name . nil) in tests
+          do (run-test name))
     (finalize)))
 
 (defun run-test-all ()
